@@ -30,6 +30,22 @@ def MAPE(pred, true):
 def MSPE(pred, true):
     return np.mean(np.square((pred - true) / true))
 
+def MASE(actual, predicted):
+  """
+  Calculates the mean absolute scaled error (MASE) for a given set of actual and predicted values.
+
+  Args:
+    actual: The actual values.
+    predicted: The predicted values.
+
+  Returns:
+    The MASE value.
+  """
+
+  naive_forecast = np.copy(actual[:-1])
+  naive_mae = np.mean(np.abs(actual[1:] - naive_forecast))
+  mase_value = np.mean(np.abs(actual - predicted)) / naive_mae
+  return mase_value
 
 def metric(pred, true):
     mae = MAE(pred, true)
@@ -37,5 +53,6 @@ def metric(pred, true):
     rmse = RMSE(pred, true)
     mape = MAPE(pred, true)
     mspe = MSPE(pred, true)
+    mase = MASE(true, pred)
 
-    return mae, mse, rmse, mape, mspe
+    return mae, mse, rmse, mape, mspe, mase
